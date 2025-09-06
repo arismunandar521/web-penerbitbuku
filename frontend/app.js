@@ -60,4 +60,4 @@ function tutupFormBuku() {
 }
 
 // Render daftar buku saat halaman dibuka
-window.onload = renderBuku;// Kode JavaScript akan ditulis di sini
+window.onload = renderBuku;
