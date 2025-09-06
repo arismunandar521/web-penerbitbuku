@@ -61,3 +61,68 @@ function tutupFormBuku() {
 
 // Render daftar buku saat halaman dibuka
 window.onload = renderBuku;
+let isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+
+// Fungsi login admin
+function loginAdmin() {
+  const pass = document.getElementById('adminPassword').value;
+  if (pass === 'sanadguru2024') { // ganti dengan password admin yang kamu inginkan
+    isAdmin = true;
+    sessionStorage.setItem('isAdmin', 'true');
+    document.getElementById('adminLogin').style.display = 'none';
+    renderBooks();
+  } else {
+    document.getElementById('loginError').style.display = 'inline';
+  }
+}
+
+// Sembunyikan menu CRUD jika bukan admin
+function renderBooks(booksToRender = filteredBooks) {
+  // ... kode render sebelumnya ...
+  // Ubah bagian tombol
+  if (currentView === 'grid') {
+    grid.innerHTML = paginatedBooks.map(book => `
+      <div class="book-card ...">
+        <!-- ... -->
+        ${isAdmin ? `
+          <div class="flex gap-2">
+            <button onclick="editBook(${book.id})" ...>Edit</button>
+            <button onclick="deleteBook(${book.id})" ...>Hapus</button>
+          </div>
+        ` : ''}
+      </div>
+    `).join('');
+  } else {
+    // Bagian list view
+    list.innerHTML = paginatedBooks.map(book => `
+      <div class="book-card ...">
+        <!-- ... -->
+        <div class="flex gap-2">
+          <button ...>Beli</button>
+          ${isAdmin ? `
+            <button onclick="editBook(${book.id})" ...>Edit</button>
+            <button onclick="deleteBook(${book.id})" ...>Hapus</button>
+          ` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+  // ... lanjut pagination ...
+}
+
+// Sembunyikan tombol tambah buku
+function showAddBookForm() {
+  if (!isAdmin) return; // hanya admin
+  // ... lanjut fungsi ...
+}
+
+// Pada halaman load, sembunyikan form CRUD jika bukan admin
+document.addEventListener('DOMContentLoaded', function() {
+  if (!isAdmin) {
+    document.getElementById('adminLogin').style.display = 'block';
+  } else {
+    document.getElementById('adminLogin').style.display = 'none';
+  }
+  renderBooks();
+  // ... fungsi lain ...
+});
