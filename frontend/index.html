@@ -186,6 +186,11 @@
     </style>
 </head>
 <body class="bg-gray-50 overflow-x-hidden">
+   <div id="adminLogin" style="text-align:center; margin:24px 0;">
+  <input type="password" id="adminPassword" placeholder="Masukkan password admin" />
+  <button onclick="loginAdmin()">Login Admin</button>
+  <span id="loginError" style="color:red; display:none;">Password salah!</span>
+</div>
     <!-- Progress Bar -->
     <div id="progressBar" class="progress-bar" style="width: 0%"></div>
 
