@@ -3,126 +3,707 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sanad Guru - Penerbit Buku Digital</title>
+    <title>Sanad Guru - Penerbit Buku Digital Terdepan</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        .book-card { transition: all 0.3s ease; }
-        .book-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); }
-        .nav-link { position: relative; }
-        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0; background-color: #fbbf24; transition: width 0.3s ease; }
-        .nav-link:hover::after { width: 100%; }
-        .fade-in { animation: fadeIn 0.6s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            scroll-behavior: smooth;
+        }
+        
+        .hero-gradient { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .book-card { 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .book-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .book-card:hover::before {
+            left: 100%;
+        }
+        
+        .book-card:hover { 
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .nav-link { 
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after { 
+            content: ''; 
+            position: absolute; 
+            width: 0; 
+            height: 3px; 
+            bottom: -8px; 
+            left: 50%; 
+            background: linear-gradient(90deg, #fbbf24, #f59e0b);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .nav-link:hover::after { 
+            width: 100%; 
+        }
+        
+        .fade-in-up { 
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        @keyframes fadeInUp { 
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            } 
+        }
+        
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+        .stagger-4 { animation-delay: 0.4s; }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stats-counter {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #667eea;
+        }
+        
+        .feature-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .modal-backdrop {
+            backdrop-filter: blur(5px);
+            background: rgba(0, 0, 0, 0.6);
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
+        
+        .testimonial-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .pricing-card {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .pricing-popular {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+        
+        .typing-animation {
+            border-right: 2px solid #667eea;
+            animation: typing 3s steps(40) infinite, blink 1s infinite;
+        }
+        
+        @keyframes typing {
+            0%, 50% { width: 0; }
+            100% { width: 100%; }
+        }
+        
+        @keyframes blink {
+            0%, 50% { border-color: transparent; }
+            51%, 100% { border-color: #667eea; }
+        }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 overflow-x-hidden">
+    <!-- Progress Bar -->
+    <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+
     <!-- Header -->
-    <header class="gradient-bg text-white shadow-lg">
-        <div class="container mx-auto px-6 py-8">
-            <div class="text-center mb-6">
-                <h1 class="text-4xl font-bold mb-2">📚 Sanad Guru</h1>
-                <p class="text-lg opacity-90 mb-1">PT. Sanad Ilmu Nusantara</p>
-                <p class="text-sm opacity-75">Berkedudukan di Dusun Doger, Desa Cilandak, Kec. Anjatan, Kab. Indramayu</p>
-            </div>
-            <nav class="flex justify-center space-x-8">
-                <a href="#beranda" class="nav-link text-white hover:text-yellow-300 font-medium px-3 py-2 transition-colors">Beranda</a>
-                <a href="#buku-digital" class="nav-link text-white hover:text-yellow-300 font-medium px-3 py-2 transition-colors">Buku Digital</a>
-                <a href="#tentang" class="nav-link text-white hover:text-yellow-300 font-medium px-3 py-2 transition-colors">Tentang Penerbit</a>
-                <a href="#kontak" class="nav-link text-white hover:text-yellow-300 font-medium px-3 py-2 transition-colors">Kontak</a>
+    <header class="hero-gradient text-white shadow-2xl relative">
+        <div class="container mx-auto px-6 py-12 relative z-10">
+            <!-- Navigation -->
+            <nav class="flex justify-between items-center mb-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-book-open text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">Sanad Guru</h1>
+                        <p class="text-sm opacity-80">Digital Publisher</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#beranda" class="nav-link text-white hover:text-yellow-300 font-medium px-3 py-2">Beranda</a>
+                    <a href="#buku-digital" class="nav-link text-white hover:text-yellow-300 font-medium px-3 py-2">Buku Digital</a>
+                    <a href="#layanan" class="nav-link text-white hover:text-yellow-300 font-medium px-3 py-2">Layanan</a>
+                    <a href="#tentang" class="nav-link text-white hover:text-yellow-300 font-medium px-3 py-2">Tentang</a>
+                    <a href="#kontak" class="nav-link text-white hover:text-yellow-300 font-medium px-3 py-2">Kontak</a>
+                </div>
+                <button id="mobileMenuBtn" class="md:hidden text-white text-2xl">
+                    <i class="fas fa-bars"></i>
+                </button>
             </nav>
+
+            <!-- Hero Section -->
+            <div class="text-center mb-16">
+                <div class="floating-animation inline-block mb-8">
+                    <div class="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto">
+                        <i class="fas fa-graduation-cap text-4xl text-white"></i>
+                    </div>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6 fade-in-up">
+                    Sanad <span class="text-yellow-300">Guru</span>
+                </h1>
+                <p class="text-xl md:text-2xl opacity-90 mb-2 fade-in-up stagger-1">PT. Sanad Ilmu Nusantara</p>
+                <p class="text-lg opacity-75 mb-8 fade-in-up stagger-2">Penerbit Buku Digital Terdepan Indonesia</p>
+                <div class="fade-in-up stagger-3">
+                    <button onclick="scrollToSection('buku-digital')" class="bg-white text-purple-600 px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-300 hover:text-purple-700 transition-all transform hover:scale-105 shadow-lg mr-4">
+                        <i class="fas fa-book-reader mr-2"></i>Jelajahi Koleksi
+                    </button>
+                    <button onclick="scrollToSection('kontak')" class="glass-effect text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white hover:bg-opacity-20 transition-all">
+                        <i class="fas fa-envelope mr-2"></i>Hubungi Kami
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center fade-in-up stagger-4">
+                <div class="glass-effect rounded-2xl p-6">
+                    <div class="stats-counter" data-target="150">0</div>
+                    <p class="text-sm opacity-80">Buku Diterbitkan</p>
+                </div>
+                <div class="glass-effect rounded-2xl p-6">
+                    <div class="stats-counter" data-target="50">0</div>
+                    <p class="text-sm opacity-80">Penulis Bergabung</p>
+                </div>
+                <div class="glass-effect rounded-2xl p-6">
+                    <div class="stats-counter" data-target="10000">0</div>
+                    <p class="text-sm opacity-80">Pembaca Aktif</p>
+                </div>
+                <div class="glass-effect rounded-2xl p-6">
+                    <div class="stats-counter" data-target="5">0</div>
+                    <p class="text-sm opacity-80">Tahun Pengalaman</p>
+                </div>
+            </div>
         </div>
+        
+        <!-- Floating Elements -->
+        <div class="absolute top-20 left-10 w-20 h-20 bg-white bg-opacity-10 rounded-full floating-animation" style="animation-delay: -2s;"></div>
+        <div class="absolute bottom-20 right-10 w-16 h-16 bg-white bg-opacity-10 rounded-full floating-animation" style="animation-delay: -4s;"></div>
+        <div class="absolute top-1/2 left-1/4 w-12 h-12 bg-white bg-opacity-10 rounded-full floating-animation" style="animation-delay: -1s;"></div>
     </header>
 
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed inset-0 bg-purple-900 bg-opacity-95 z-50 hidden">
+        <div class="flex flex-col items-center justify-center h-full space-y-8 text-white text-2xl">
+            <a href="#beranda" class="hover:text-yellow-300 transition-colors" onclick="closeMobileMenu()">Beranda</a>
+            <a href="#buku-digital" class="hover:text-yellow-300 transition-colors" onclick="closeMobileMenu()">Buku Digital</a>
+            <a href="#layanan" class="hover:text-yellow-300 transition-colors" onclick="closeMobileMenu()">Layanan</a>
+            <a href="#tentang" class="hover:text-yellow-300 transition-colors" onclick="closeMobileMenu()">Tentang</a>
+            <a href="#kontak" class="hover:text-yellow-300 transition-colors" onclick="closeMobileMenu()">Kontak</a>
+            <button onclick="closeMobileMenu()" class="absolute top-8 right-8 text-3xl">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Main Content -->
-    <main class="container mx-auto px-6 py-12">
+    <main class="container mx-auto px-6 py-16">
         <!-- Welcome Section -->
-        <section id="beranda" class="fade-in mb-16">
-            <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-                <div class="grid md:grid-cols-2 gap-8 items-center">
+        <section id="beranda" class="mb-20">
+            <div class="bg-white rounded-3xl shadow-2xl p-8 md:p-16 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-purple-100 to-blue-100 rounded-full -translate-y-32 translate-x-32 opacity-50"></div>
+                <div class="grid md:grid-cols-2 gap-12 items-center relative z-10">
                     <div>
-                        <h2 class="text-3xl font-bold text-gray-800 mb-6">Selamat Datang di Sanad Guru</h2>
-                        <p class="text-gray-600 text-lg leading-relaxed mb-6">
-                            Sanad Guru adalah penerbit buku digital yang berkomitmen menghadirkan karya-karya berkualitas, memperluas akses literasi, dan mendukung pengembangan ilmu pengetahuan di Indonesia.
+                        <h2 class="text-4xl md:text-5xl font-bold gradient-text mb-8">Selamat Datang di Era Literasi Digital</h2>
+                        <p class="text-gray-600 text-lg leading-relaxed mb-8">
+                            Sanad Guru hadir sebagai pionir penerbitan buku digital di Indonesia. Kami berkomitmen menghadirkan karya-karya berkualitas tinggi yang mudah diakses, mendukung transformasi digital pendidikan, dan memberdayakan penulis lokal untuk berkarya lebih luas.
                         </p>
-                        <button class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105">
-                            Jelajahi Koleksi Buku
+                        <div class="grid grid-cols-2 gap-6 mb-8">
+                            <div class="text-center p-4 bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl">
+                                <i class="fas fa-award text-3xl feature-icon mb-2"></i>
+                                <h4 class="font-semibold text-gray-700">Kualitas Terjamin</h4>
+                            </div>
+                            <div class="text-center p-4 bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl">
+                                <i class="fas fa-globe text-3xl feature-icon mb-2"></i>
+                                <h4 class="font-semibold text-gray-700">Akses Global</h4>
+                            </div>
+                        </div>
+                        <button onclick="scrollToSection('buku-digital')" class="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-rocket mr-2"></i>Mulai Jelajahi
                         </button>
                     </div>
                     <div class="text-center">
-                        <div class="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl p-8">
-                            <div class="text-6xl mb-4">📖</div>
-                            <h3 class="text-xl font-semibold text-gray-700 mb-2">Buku Digital Berkualitas</h3>
-                            <p class="text-gray-600">Akses mudah, kapan saja, di mana saja</p>
+                        <div class="relative">
+                            <div class="w-80 h-80 bg-gradient-to-br from-purple-400 via-blue-500 to-purple-600 rounded-full mx-auto flex items-center justify-center shadow-2xl">
+                                <i class="fas fa-book-open text-8xl text-white opacity-90"></i>
+                            </div>
+                            <div class="absolute -top-4 -right-4 w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg floating-animation">
+                                <i class="fas fa-star text-white text-xl"></i>
+                            </div>
+                            <div class="absolute -bottom-4 -left-4 w-12 h-12 bg-green-400 rounded-full flex items-center justify-center shadow-lg floating-animation" style="animation-delay: -2s;">
+                                <i class="fas fa-check text-white"></i>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Digital Books Section -->
-        <section id="buku-digital" class="fade-in mb-16">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-800 mb-4">Koleksi Buku Digital</h2>
-                <p class="text-gray-600 text-lg">Temukan berbagai buku digital berkualitas dari penulis terbaik</p>
+        <!-- Services Section -->
+        <section id="layanan" class="mb-20">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold gradient-text mb-6">Layanan Profesional Kami</h2>
+                <p class="text-gray-600 text-xl max-w-3xl mx-auto">Solusi lengkap untuk kebutuhan penerbitan digital Anda dengan standar internasional</p>
             </div>
             
-            <!-- Book Management Controls -->
-            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
-                <div class="flex flex-wrap gap-4 justify-between items-center">
-                    <div class="flex gap-4">
-                        <button onclick="showAddBookForm()" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors">
-                            ➕ Tambah Buku
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-pen-fancy text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Penerbitan Digital</h3>
+                    <p class="text-gray-600 mb-6">Layanan penerbitan buku digital end-to-end dengan teknologi terdepan dan distribusi multi-platform.</p>
+                    <ul class="text-gray-600 space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Format EPUB, PDF, dan interaktif</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Distribusi ke 50+ platform</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Analytics dan reporting</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-green-500 to-blue-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-edit text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Editing Profesional</h3>
+                    <p class="text-gray-600 mb-6">Tim editor berpengalaman siap memoles naskah Anda menjadi karya yang sempurna dan siap terbit.</p>
+                    <ul class="text-gray-600 space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Substantive editing</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Copy editing & proofreading</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Fact-checking</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-300 group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-palette text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Desain Kreatif</h3>
+                    <p class="text-gray-600 mb-6">Desain cover dan layout yang menarik untuk meningkatkan daya tarik dan penjualan buku Anda.</p>
+                    <ul class="text-gray-600 space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Cover design premium</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Interior layout</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i>Ilustrasi custom</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Pricing Plans -->
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold gradient-text mb-4">Paket Penerbitan</h3>
+                <p class="text-gray-600 text-lg">Pilih paket yang sesuai dengan kebutuhan Anda</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="pricing-card bg-white rounded-2xl shadow-xl p-8 border-2 border-gray-100">
+                    <div class="text-center mb-8">
+                        <h4 class="text-2xl font-bold text-gray-800 mb-2">Starter</h4>
+                        <div class="text-4xl font-bold text-purple-600 mb-2">Rp 2.5jt</div>
+                        <p class="text-gray-600">Untuk penulis pemula</p>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Editing dasar</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Cover design</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Format EPUB & PDF</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Distribusi 10 platform</li>
+                    </ul>
+                    <button class="w-full bg-purple-600 text-white py-3 rounded-xl font-semibold hover:bg-purple-700 transition-colors">
+                        Pilih Paket
+                    </button>
+                </div>
+                
+                <div class="pricing-card pricing-popular rounded-2xl shadow-2xl p-8 border-2 border-purple-500 relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-purple-900 px-6 py-2 rounded-full text-sm font-bold">
+                        TERPOPULER
+                    </div>
+                    <div class="text-center mb-8">
+                        <h4 class="text-2xl font-bold mb-2">Professional</h4>
+                        <div class="text-4xl font-bold mb-2">Rp 5jt</div>
+                        <p class="opacity-90">Untuk penulis serius</p>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center"><i class="fas fa-check text-yellow-300 mr-3"></i>Editing profesional</li>
+                        <li class="flex items-center"><i class="fas fa-check text-yellow-300 mr-3"></i>Cover design premium</li>
+                        <li class="flex items-center"><i class="fas fa-check text-yellow-300 mr-3"></i>Format lengkap + interaktif</li>
+                        <li class="flex items-center"><i class="fas fa-check text-yellow-300 mr-3"></i>Distribusi 30 platform</li>
+                        <li class="flex items-center"><i class="fas fa-check text-yellow-300 mr-3"></i>Marketing support</li>
+                    </ul>
+                    <button class="w-full bg-white text-purple-600 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors">
+                        Pilih Paket
+                    </button>
+                </div>
+                
+                <div class="pricing-card bg-white rounded-2xl shadow-xl p-8 border-2 border-gray-100">
+                    <div class="text-center mb-8">
+                        <h4 class="text-2xl font-bold text-gray-800 mb-2">Enterprise</h4>
+                        <div class="text-4xl font-bold text-purple-600 mb-2">Rp 10jt</div>
+                        <p class="text-gray-600">Untuk institusi</p>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Full editing suite</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Custom design</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Semua format</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Distribusi global</li>
+                        <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Dedicated support</li>
+                    </ul>
+                    <button class="w-full bg-purple-600 text-white py-3 rounded-xl font-semibold hover:bg-purple-700 transition-colors">
+                        Pilih Paket
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Digital Books Section -->
+        <section id="buku-digital" class="mb-20">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold gradient-text mb-6">Koleksi Buku Digital Terbaru</h2>
+                <p class="text-gray-600 text-xl max-w-3xl mx-auto">Jelajahi perpustakaan digital kami yang terus berkembang dengan berbagai kategori menarik</p>
+            </div>
+            
+            <!-- Advanced Book Management Controls -->
+            <div class="bg-white rounded-2xl shadow-xl p-8 mb-12">
+                <div class="flex flex-wrap gap-4 justify-between items-center mb-6">
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="showAddBookForm()" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-green-600 hover:to-green-700 transition-all transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-plus mr-2"></i>Tambah Buku
                         </button>
-                        <button onclick="showAuthorManager()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                            👤 Kelola Penulis
+                        <button onclick="showAuthorManager()" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-user-edit mr-2"></i>Kelola Penulis
                         </button>
-                        <button onclick="showCategoryManager()" class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors">
-                            🏷️ Kelola Kategori
+                        <button onclick="showCategoryManager()" class="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-6 py-3 rounded-xl hover:from-purple-600 hover:to-purple-700 transition-all transform hover:scale-105 shadow-lg">
+                            <i class="fas fa-tags mr-2"></i>Kelola Kategori
+                        </button>
+                        <button onclick="exportData()" class="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-6 py-3 rounded-xl hover:from-gray-600 hover:to-gray-700 transition-all">
+                            <i class="fas fa-download mr-2"></i>Export Data
                         </button>
                     </div>
-                    <div class="flex gap-2">
-                        <select id="categoryFilter" onchange="filterBooks()" class="border border-gray-300 rounded-lg px-4 py-2">
+                    <div class="flex gap-3">
+                        <select id="sortBy" onchange="sortBooks()" class="border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <option value="title">Urutkan: Judul</option>
+                            <option value="author">Urutkan: Penulis</option>
+                            <option value="year">Urutkan: Tahun</option>
+                            <option value="category">Urutkan: Kategori</option>
+                        </select>
+                        <select id="categoryFilter" onchange="filterBooks()" class="border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                             <option value="">Semua Kategori</option>
                         </select>
-                        <input type="text" id="searchBooks" placeholder="Cari buku..." onkeyup="searchBooks()" class="border border-gray-300 rounded-lg px-4 py-2 w-64">
+                        <div class="relative">
+                            <input type="text" id="searchBooks" placeholder="Cari buku, penulis, atau kata kunci..." onkeyup="searchBooks()" class="border border-gray-300 rounded-xl px-4 py-3 pl-12 w-80 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <i class="fas fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- View Toggle -->
+                <div class="flex justify-between items-center">
+                    <div class="flex gap-2">
+                        <button id="gridViewBtn" onclick="setView('grid')" class="px-4 py-2 rounded-lg bg-purple-600 text-white">
+                            <i class="fas fa-th-large mr-2"></i>Grid
+                        </button>
+                        <button id="listViewBtn" onclick="setView('list')" class="px-4 py-2 rounded-lg bg-gray-200 text-gray-700">
+                            <i class="fas fa-list mr-2"></i>List
+                        </button>
+                    </div>
+                    <div class="text-gray-600">
+                        <span id="bookCount">0</span> buku ditemukan
                     </div>
                 </div>
             </div>
 
-            <!-- Books Grid -->
-            <div id="booksGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Books will be populated by JavaScript -->
+            <!-- Books Display -->
+            <div id="booksContainer">
+                <div id="booksGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Books will be populated by JavaScript -->
+                </div>
+                <div id="booksList" class="space-y-4 hidden">
+                    <!-- List view will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div id="pagination" class="flex justify-center mt-12">
+                <!-- Pagination will be populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Testimonials Section -->
+        <section class="mb-20">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold gradient-text mb-6">Testimoni Penulis & Pembaca</h2>
+                <p class="text-gray-600 text-xl">Apa kata mereka tentang layanan kami</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="testimonial-card rounded-2xl p-8 text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-400 to-blue-500 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <i class="fas fa-user text-2xl text-white"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 italic">"Sanad Guru membantu saya menerbitkan buku pertama dengan proses yang sangat profesional dan hasil yang memuaskan."</p>
+                    <h4 class="font-bold text-gray-800">Dr. Ahmad Susanto</h4>
+                    <p class="text-gray-600">Penulis Buku Pendidikan</p>
+                    <div class="flex justify-center mt-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card rounded-2xl p-8 text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-green-400 to-blue-500 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <i class="fas fa-user text-2xl text-white"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 italic">"Platform yang luar biasa! Mudah digunakan dan tim support sangat responsif. Highly recommended!"</p>
+                    <h4 class="font-bold text-gray-800">Prof. Siti Nurhaliza</h4>
+                    <p class="text-gray-600">Akademisi & Peneliti</p>
+                    <div class="flex justify-center mt-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card rounded-2xl p-8 text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-pink-400 to-purple-500 rounded-full mx-auto mb-6 flex items-center justify-center">
+                        <i class="fas fa-user text-2xl text-white"></i>
+                    </div>
+                    <p class="text-gray-700 mb-6 italic">"Sebagai pembaca, saya sangat terbantu dengan koleksi buku digital yang berkualitas dan mudah diakses."</p>
+                    <h4 class="font-bold text-gray-800">Maya Sari</h4>
+                    <p class="text-gray-600">Pembaca Setia</p>
+                    <div class="flex justify-center mt-4">
+                        <div class="flex text-yellow-400">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- About Section -->
-        <section id="tentang" class="fade-in mb-16">
-            <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Tentang Penerbit</h2>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-700 mb-4">🎯 Visi Kami</h3>
-                        <p class="text-gray-600 mb-6">Menjadi penerbit digital terdepan yang menghadirkan karya-karya berkualitas untuk mencerdaskan bangsa.</p>
-                        
-                        <h3 class="text-xl font-semibold text-gray-700 mb-4">🚀 Misi Kami</h3>
-                        <ul class="text-gray-600 space-y-2">
-                            <li>• Menerbitkan buku digital berkualitas tinggi</li>
-                            <li>• Mendukung penulis lokal Indonesia</li>
-                            <li>• Memperluas akses literasi digital</li>
-                            <li>• Mengembangkan teknologi penerbitan modern</li>
-                        </ul>
+        <section id="tentang" class="mb-20">
+            <div class="bg-white rounded-3xl shadow-2xl p-8 md:p-16 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-64 h-64 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full -translate-y-32 -translate-x-32 opacity-50"></div>
+                <div class="relative z-10">
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl font-bold gradient-text mb-6">Tentang Sanad Guru</h2>
+                        <p class="text-gray-600 text-xl max-w-3xl mx-auto">Membangun masa depan literasi digital Indonesia dengan inovasi dan dedikasi</p>
                     </div>
-                    <div>
-                        <h3 class="text-xl font-semibold text-gray-700 mb-4">🏢 Profil Perusahaan</h3>
-                        <div class="bg-gray-50 rounded-lg p-6">
-                            <p class="text-gray-600 mb-2"><strong>Nama:</strong> PT. Sanad Ilmu Nusantara</p>
-                            <p class="text-gray-600 mb-2"><strong>Alamat:</strong> Dusun Doger, Desa Cilandak</p>
-                            <p class="text-gray-600 mb-2"><strong>Kecamatan:</strong> Anjatan</p>
-                            <p class="text-gray-600 mb-2"><strong>Kabupaten:</strong> Indramayu</p>
-                            <p class="text-gray-600"><strong>Fokus:</strong> Penerbitan Buku Digital</p>
+                    
+                    <div class="grid md:grid-cols-2 gap-16 mb-16">
+                        <div>
+                            <div class="mb-8">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
+                                        <i class="fas fa-eye text-white text-xl"></i>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-gray-800">Visi Kami</h3>
+                                </div>
+                                <p class="text-gray-600 text-lg leading-relaxed">Menjadi penerbit digital terdepan di Indonesia yang menghadirkan revolusi literasi melalui teknologi inovatif dan karya-karya berkualitas tinggi.</p>
+                            </div>
+                            
+                            <div class="mb-8">
+                                <div class="flex items-center mb-4">
+                                    <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-xl flex items-center justify-center mr-4">
+                                        <i class="fas fa-rocket text-white text-xl"></i>
+                                    </div>
+                                    <h3 class="text-2xl font-bold text-gray-800">Misi Kami</h3>
+                                </div>
+                                <ul class="text-gray-600 space-y-3 text-lg">
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                                        Menerbitkan buku digital berkualitas internasional
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                                        Memberdayakan penulis lokal Indonesia
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                                        Memperluas akses literasi digital nasional
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fas fa-check-circle text-green-500 mr-3 mt-1"></i>
+                                        Mengembangkan teknologi penerbitan terdepan
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="bg-gradient-to-br from-purple-50 to-blue-50 rounded-2xl p-8 mb-8">
+                                <h3 class="text-2xl font-bold text-gray-800 mb-6">Profil Perusahaan</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-building text-purple-600 mr-4 text-xl"></i>
+                                        <div>
+                                            <p class="font-semibold text-gray-800">PT. Sanad Ilmu Nusantara</p>
+                                            <p class="text-gray-600">Badan Hukum Perseroan Terbatas</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-map-marker-alt text-purple-600 mr-4 text-xl"></i>
+                                        <div>
+                                            <p class="font-semibold text-gray-800">Kantor Pusat</p>
+                                            <p class="text-gray-600">Dusun Doger, Desa Cilandak<br>Kec. Anjatan, Kab. Indramayu</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-calendar-alt text-purple-600 mr-4 text-xl"></i>
+                                        <div>
+                                            <p class="font-semibold text-gray-800">Didirikan</p>
+                                            <p class="text-gray-600">2020 - 5 Tahun Pengalaman</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <i class="fas fa-users text-purple-600 mr-4 text-xl"></i>
+                                        <div>
+                                            <p class="font-semibold text-gray-800">Tim Profesional</p>
+                                            <p class="text-gray-600">25+ Editor, Designer & Developer</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Achievement Cards -->
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-gradient-to-br from-blue-500 to-purple-600 text-white rounded-xl p-6 text-center">
+                                    <i class="fas fa-trophy text-3xl mb-2"></i>
+                                    <div class="text-2xl font-bold">ISO 9001</div>
+                                    <p class="text-sm opacity-90">Certified</p>
+                                </div>
+                                <div class="bg-gradient-to-br from-green-500 to-blue-600 text-white rounded-xl p-6 text-center">
+                                    <i class="fas fa-medal text-3xl mb-2"></i>
+                                    <div class="text-2xl font-bold">Top 10</div>
+                                    <p class="text-sm opacity-90">Publisher ID</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Team Section -->
+                    <div class="text-center mb-12">
+                        <h3 class="text-3xl font-bold gradient-text mb-8">Tim Profesional Kami</h3>
+                        <div class="grid md:grid-cols-4 gap-8">
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                    <i class="fas fa-user-tie text-3xl text-white"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800">CEO & Founder</h4>
+                                <p class="text-gray-600">Visioner & Strategis</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-gradient-to-br from-green-400 to-blue-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                    <i class="fas fa-edit text-3xl text-white"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800">Chief Editor</h4>
+                                <p class="text-gray-600">Quality Assurance</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-gradient-to-br from-purple-400 to-pink-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                    <i class="fas fa-palette text-3xl text-white"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800">Creative Director</h4>
+                                <p class="text-gray-600">Design & Visual</p>
+                            </div>
+                            <div class="text-center">
+                                <div class="w-24 h-24 bg-gradient-to-br from-orange-400 to-red-500 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                    <i class="fas fa-code text-3xl text-white"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800">Tech Lead</h4>
+                                <p class="text-gray-600">Innovation & Development</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -130,36 +711,126 @@
         </section>
 
         <!-- Contact Section -->
-        <section id="kontak" class="fade-in mb-16">
-            <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
-                <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center">Kontak & Layanan</h2>
-                <div class="grid md:grid-cols-2 gap-8">
+        <section id="kontak" class="mb-20">
+            <div class="bg-white rounded-3xl shadow-2xl p-8 md:p-16">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl font-bold gradient-text mb-6">Hubungi Kami</h2>
+                    <p class="text-gray-600 text-xl max-w-3xl mx-auto">Siap membantu mewujudkan impian penerbitan Anda. Mari berkolaborasi!</p>
+                </div>
+                
+                <div class="grid md:grid-cols-2 gap-16">
                     <div>
-                        <h3 class="text-xl font-semibold text-gray-700 mb-4">📞 Hubungi Kami</h3>
-                        <div class="space-y-3 text-gray-600">
-                            <p>📧 Email: info@sanadguru.co.id</p>
-                            <p>📱 WhatsApp: +62 812-3456-7890</p>
-                            <p>🌐 Website: www.sanadguru.co.id</p>
-                            <p>📍 Alamat: Dusun Doger, Desa Cilandak, Kec. Anjatan, Kab. Indramayu</p>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-8">Informasi Kontak</h3>
+                        
+                        <div class="space-y-6 mb-12">
+                            <div class="flex items-center p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl">
+                                <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
+                                    <i class="fas fa-envelope text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Email</p>
+                                    <p class="text-gray-600">info@sanadguru.co.id</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-xl">
+                                <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-blue-600 rounded-xl flex items-center justify-center mr-4">
+                                    <i class="fab fa-whatsapp text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-800">WhatsApp</p>
+                                    <p class="text-gray-600">+62 812-3456-7890</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl">
+                                <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mr-4">
+                                    <i class="fas fa-globe text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Website</p>
+                                    <p class="text-gray-600">www.sanadguru.co.id</p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-center p-4 bg-gradient-to-r from-orange-50 to-red-50 rounded-xl">
+                                <div class="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center mr-4">
+                                    <i class="fas fa-map-marker-alt text-white"></i>
+                                </div>
+                                <div>
+                                    <p class="font-semibold text-gray-800">Alamat</p>
+                                    <p class="text-gray-600">Dusun Doger, Desa Cilandak<br>Kec. Anjatan, Kab. Indramayu</p>
+                                </div>
+                            </div>
                         </div>
                         
-                        <h3 class="text-xl font-semibold text-gray-700 mb-4 mt-8">🛠️ Layanan Penerbitan</h3>
-                        <ul class="text-gray-600 space-y-2">
-                            <li>• Penerbitan buku digital</li>
-                            <li>• Editing dan proofreading</li>
-                            <li>• Desain cover profesional</li>
-                            <li>• Distribusi digital</li>
-                            <li>• Konsultasi penerbitan</li>
-                        </ul>
+                        <div class="bg-gradient-to-br from-gray-50 to-blue-50 rounded-2xl p-8">
+                            <h4 class="text-xl font-bold text-gray-800 mb-4">Jam Operasional</h4>
+                            <div class="space-y-2 text-gray-600">
+                                <div class="flex justify-between">
+                                    <span>Senin - Jumat</span>
+                                    <span class="font-semibold">08:00 - 17:00 WIB</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Sabtu</span>
+                                    <span class="font-semibold">08:00 - 15:00 WIB</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Minggu</span>
+                                    <span class="font-semibold text-red-500">Tutup</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    
                     <div>
-                        <h3 class="text-xl font-semibold text-gray-700 mb-4">💌 Kirim Pesan</h3>
-                        <form class="space-y-4" onsubmit="sendMessage(event)">
-                            <input type="text" placeholder="Nama Lengkap" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                            <input type="email" placeholder="Email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
-                            <textarea placeholder="Pesan Anda" rows="4" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
-                            <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 transition-all">
-                                Kirim Pesan
+                        <h3 class="text-2xl font-bold text-gray-800 mb-8">Kirim Pesan</h3>
+                        <form class="space-y-6" onsubmit="sendMessage(event)">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-gray-700 font-semibold mb-2">Nama Lengkap *</label>
+                                    <input type="text" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-semibold mb-2">Email *</label>
+                                    <input type="email" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                                </div>
+                            </div>
+                            
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-gray-700 font-semibold mb-2">Nomor Telepon</label>
+                                    <input type="tel" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-gray-700 font-semibold mb-2">Layanan yang Diminati</label>
+                                    <select class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                                        <option value="">Pilih Layanan</option>
+                                        <option value="penerbitan">Penerbitan Digital</option>
+                                        <option value="editing">Editing Profesional</option>
+                                        <option value="desain">Desain Kreatif</option>
+                                        <option value="konsultasi">Konsultasi</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-gray-700 font-semibold mb-2">Subjek *</label>
+                                <input type="text" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-gray-700 font-semibold mb-2">Pesan *</label>
+                                <textarea rows="5" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"></textarea>
+                            </div>
+                            
+                            <div class="flex items-center">
+                                <input type="checkbox" id="agreement" required class="mr-3 w-4 h-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded">
+                                <label for="agreement" class="text-gray-600">Saya setuju dengan <a href="#" class="text-purple-600 hover:underline">syarat dan ketentuan</a> yang berlaku</label>
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-105 shadow-lg">
+                                <i class="fas fa-paper-plane mr-2"></i>Kirim Pesan
                             </button>
                         </form>
                     </div>
@@ -169,75 +840,260 @@
     </main>
 
     <!-- Footer -->
-    <footer class="gradient-bg text-white py-8">
-        <div class="container mx-auto px-6 text-center">
-            <p class="text-lg">&copy; 2025 Sanad Guru - PT. Sanad Ilmu Nusantara</p>
-            <p class="text-sm opacity-75 mt-2">Menghadirkan literasi digital untuk Indonesia</p>
+    <footer class="hero-gradient text-white py-16 relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="w-12 h-12 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-book-open text-2xl text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold">Sanad Guru</h3>
+                            <p class="text-sm opacity-80">Digital Publisher</p>
+                        </div>
+                    </div>
+                    <p class="opacity-90 mb-6">Membangun masa depan literasi digital Indonesia dengan inovasi dan dedikasi tinggi.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center hover:bg-opacity-30 transition-all">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-bold mb-6">Layanan</h4>
+                    <ul class="space-y-3 opacity-90">
+                        <li><a href="#" class="hover:text-yellow-300 transition-colors">Penerbitan Digital</a></li>
+                        <li><a href="#" class="hover:text-yellow-300 transition-colors">Editing Profesional</a></li>
+                        <li><a href="#" class="hover:text-yellow-300 transition-colors">Desain Kreatif</a></li>
+                        <li><a href="#" class="hover:text-yellow-300 transition-colors">Konsultasi</a></li>
+                        <li><a href="#" class="hover:text-yellow-300 transition-colors">Distribusi Global</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-bold mb-6">Perusahaan</h4>
+                    <ul class="space-y-3 opacity-90">
+                        <li><a href="#tentang" class="hover:text-yellow-300 transition-colors">Tentang Kami</a></li>
+                        <li><a href="#" class="hover:text-yellow-300 transition-colors">Karir</a></li>
+                        <li><a href="#" class="hover:text-yellow-300 transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-yellow-300 transition-colors">Press Release</a></li>
+                        <li><a href="#" class="hover:text-yellow-300 transition-colors">Partnership</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-xl font-bold mb-6">Kontak</h4>
+                    <div class="space-y-3 opacity-90">
+                        <p><i class="fas fa-envelope mr-2"></i>info@sanadguru.co.id</p>
+                        <p><i class="fas fa-phone mr-2"></i>+62 812-3456-7890</p>
+                        <p><i class="fas fa-map-marker-alt mr-2"></i>Indramayu, Jawa Barat</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white border-opacity-20 pt-8 text-center">
+                <p class="text-lg mb-2">&copy; 2025 Sanad Guru - PT. Sanad Ilmu Nusantara</p>
+                <p class="opacity-75">Menghadirkan literasi digital untuk Indonesia yang lebih cerdas</p>
+            </div>
         </div>
+        
+        <!-- Floating Elements -->
+        <div class="absolute top-10 right-10 w-20 h-20 bg-white bg-opacity-10 rounded-full floating-animation"></div>
+        <div class="absolute bottom-10 left-10 w-16 h-16 bg-white bg-opacity-10 rounded-full floating-animation" style="animation-delay: -3s;"></div>
     </footer>
 
-    <!-- Modal for Add/Edit Book -->
-    <div id="bookModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
-            <h3 id="modalTitle" class="text-2xl font-bold text-gray-800 mb-6">Tambah Buku Baru</h3>
+    <!-- Modals (same as before but with enhanced styling) -->
+    <div id="bookModal" class="fixed inset-0 modal-backdrop hidden items-center justify-center z-50">
+        <div class="bg-white rounded-3xl p-8 max-w-lg w-full mx-4 shadow-2xl transform transition-all">
+            <h3 id="modalTitle" class="text-3xl font-bold gradient-text mb-8">Tambah Buku Baru</h3>
             <form id="bookForm" onsubmit="saveBook(event)">
                 <input type="hidden" id="bookId">
-                <div class="space-y-4">
-                    <input type="text" id="bookTitle" placeholder="Judul Buku" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500">
-                    <select id="bookAuthor" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500">
-                        <option value="">Pilih Penulis</option>
-                    </select>
-                    <select id="bookCategory" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500">
-                        <option value="">Pilih Kategori</option>
-                    </select>
-                    <input type="number" id="bookYear" placeholder="Tahun Terbit" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500">
-                    <textarea id="bookDescription" placeholder="Deskripsi Buku" rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-purple-500"></textarea>
+                <div class="space-y-6">
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Judul Buku *</label>
+                        <input type="text" id="bookTitle" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Penulis *</label>
+                        <select id="bookAuthor" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <option value="">Pilih Penulis</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Kategori *</label>
+                        <select id="bookCategory" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <option value="">Pilih Kategori</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Tahun Terbit *</label>
+                        <input type="number" id="bookYear" min="1900" max="2030" required class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-semibold mb-2">Deskripsi</label>
+                        <textarea id="bookDescription" rows="4" class="w-full border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"></textarea>
+                    </div>
                 </div>
-                <div class="flex gap-4 mt-6">
-                    <button type="button" onclick="closeModal()" class="flex-1 bg-gray-500 text-white py-3 rounded-lg hover:bg-gray-600 transition-colors">Batal</button>
-                    <button type="submit" class="flex-1 bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors">Simpan</button>
+                <div class="flex gap-4 mt-8">
+                    <button type="button" onclick="closeModal()" class="flex-1 bg-gray-500 text-white py-3 rounded-xl hover:bg-gray-600 transition-colors font-semibold">
+                        <i class="fas fa-times mr-2"></i>Batal
+                    </button>
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 rounded-xl hover:from-purple-700 hover:to-blue-700 transition-all font-semibold">
+                        <i class="fas fa-save mr-2"></i>Simpan
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal for Author/Category Management -->
-    <div id="manageModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4">
-            <h3 id="manageModalTitle" class="text-2xl font-bold text-gray-800 mb-6">Kelola Penulis</h3>
-            <div class="mb-4">
-                <div class="flex gap-2">
-                    <input type="text" id="newItemName" placeholder="Nama baru" class="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-purple-500">
-                    <button onclick="addNewItem()" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Tambah</button>
+    <div id="manageModal" class="fixed inset-0 modal-backdrop hidden items-center justify-center z-50">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl">
+            <h3 id="manageModalTitle" class="text-3xl font-bold gradient-text mb-8">Kelola Penulis</h3>
+            <div class="mb-6">
+                <div class="flex gap-3">
+                    <input type="text" id="newItemName" placeholder="Nama baru" class="flex-1 border border-gray-300 rounded-xl px-4 py-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    <button onclick="addNewItem()" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl hover:from-green-600 hover:to-green-700 transition-all">
+                        <i class="fas fa-plus"></i>
+                    </button>
                 </div>
             </div>
-            <div id="itemsList" class="max-h-64 overflow-y-auto space-y-2 mb-6">
+            <div id="itemsList" class="max-h-64 overflow-y-auto space-y-3 mb-8">
                 <!-- Items will be populated by JavaScript -->
             </div>
-            <button onclick="closeManageModal()" class="w-full bg-gray-500 text-white py-3 rounded-lg hover:bg-gray-600 transition-colors">Tutup</button>
+            <button onclick="closeManageModal()" class="w-full bg-gray-500 text-white py-3 rounded-xl hover:bg-gray-600 transition-colors font-semibold">
+                <i class="fas fa-times mr-2"></i>Tutup
+            </button>
         </div>
     </div>
 
+    <!-- Back to Top Button -->
+    <button id="backToTop" class="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full shadow-lg hover:from-purple-700 hover:to-blue-700 transition-all transform hover:scale-110 hidden z-40">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
     <script>
-        // Data storage
+        // Enhanced data with more realistic content
         let books = [
-            { id: 1, title: "Panduan Mengajar Digital", author: "Dr. Ahmad Susanto", category: "Pendidikan", year: 2024, description: "Buku panduan lengkap untuk guru dalam mengajar di era digital" },
-            { id: 2, title: "Teknologi Pembelajaran Modern", author: "Prof. Siti Nurhaliza", category: "Teknologi", year: 2024, description: "Eksplorasi teknologi terbaru dalam dunia pendidikan" },
-            { id: 3, title: "Psikologi Anak Usia Sekolah", author: "Dr. Budi Santoso", category: "Psikologi", year: 2023, description: "Memahami perkembangan psikologi anak dalam lingkungan sekolah" }
+            { 
+                id: 1, 
+                title: "Panduan Mengajar Digital Era 4.0", 
+                author: "Dr. Ahmad Susanto", 
+                category: "Pendidikan", 
+                year: 2024, 
+                description: "Buku panduan komprehensif untuk guru dalam mengintegrasikan teknologi digital dalam pembelajaran modern. Dilengkapi dengan studi kasus dan praktik terbaik.",
+                rating: 4.8,
+                pages: 320,
+                price: "Rp 89.000"
+            },
+            { 
+                id: 2, 
+                title: "Teknologi Pembelajaran Interaktif", 
+                author: "Prof. Siti Nurhaliza", 
+                category: "Teknologi", 
+                year: 2024, 
+                description: "Eksplorasi mendalam tentang teknologi pembelajaran terbaru, AR/VR dalam pendidikan, dan implementasi AI untuk personalisasi pembelajaran.",
+                rating: 4.9,
+                pages: 450,
+                price: "Rp 125.000"
+            },
+            { 
+                id: 3, 
+                title: "Psikologi Anak Usia Sekolah", 
+                author: "Dr. Budi Santoso", 
+                category: "Psikologi", 
+                year: 2023, 
+                description: "Memahami perkembangan psikologi anak dalam lingkungan sekolah, termasuk strategi mengatasi masalah belajar dan perilaku.",
+                rating: 4.7,
+                pages: 280,
+                price: "Rp 75.000"
+            },
+            { 
+                id: 4, 
+                title: "Sastra Digital Indonesia", 
+                author: "Dra. Maya Sari", 
+                category: "Sastra", 
+                year: 2024, 
+                description: "Antologi karya sastra digital terpilih dari penulis Indonesia, menampilkan inovasi dalam bercerita di era digital.",
+                rating: 4.6,
+                pages: 380,
+                price: "Rp 95.000"
+            },
+            { 
+                id: 5, 
+                title: "Sains untuk Kehidupan", 
+                author: "Prof. Dr. Andi Wijaya", 
+                category: "Sains", 
+                year: 2023, 
+                description: "Penjelasan sains kompleks dengan bahasa sederhana, cocok untuk siswa dan masyarakat umum yang ingin memahami fenomena alam.",
+                rating: 4.8,
+                pages: 350,
+                price: "Rp 110.000"
+            },
+            { 
+                id: 6, 
+                title: "Manajemen Kelas Digital", 
+                author: "Dr. Rini Handayani", 
+                category: "Pendidikan", 
+                year: 2024, 
+                description: "Strategi efektif mengelola kelas dalam pembelajaran hybrid dan online, termasuk tools dan teknik engagement siswa.",
+                rating: 4.7,
+                pages: 290,
+                price: "Rp 85.000"
+            }
         ];
         
-        let authors = ["Dr. Ahmad Susanto", "Prof. Siti Nurhaliza", "Dr. Budi Santoso", "Dra. Maya Sari"];
-        let categories = ["Pendidikan", "Teknologi", "Psikologi", "Sastra", "Sains"];
+        let authors = [
+            "Dr. Ahmad Susanto", 
+            "Prof. Siti Nurhaliza", 
+            "Dr. Budi Santoso", 
+            "Dra. Maya Sari", 
+            "Prof. Dr. Andi Wijaya", 
+            "Dr. Rini Handayani",
+            "Dr. Indira Sari",
+            "Prof. Bambang Sutrisno"
+        ];
+        
+        let categories = [
+            "Pendidikan", 
+            "Teknologi", 
+            "Psikologi", 
+            "Sastra", 
+            "Sains", 
+            "Bisnis", 
+            "Kesehatan", 
+            "Sejarah"
+        ];
+        
         let currentManageType = '';
+        let currentView = 'grid';
+        let currentPage = 1;
+        let itemsPerPage = 6;
+        let filteredBooks = [...books];
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
             renderBooks();
             populateSelects();
             setupSmoothScrolling();
+            setupProgressBar();
+            setupBackToTop();
+            setupMobileMenu();
+            animateStats();
+            updateBookCount();
         });
 
-        // Smooth scrolling for navigation
+        // Enhanced smooth scrolling
         function setupSmoothScrolling() {
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
@@ -250,26 +1106,309 @@
             });
         }
 
-        // Render books grid
-        function renderBooks(booksToRender = books) {
-            const grid = document.getElementById('booksGrid');
-            grid.innerHTML = booksToRender.map(book => `
-                <div class="book-card bg-white rounded-xl shadow-lg p-6">
-                    <div class="text-4xl mb-4 text-center">📚</div>
-                    <h3 class="text-xl font-semibold text-gray-800 mb-2">${book.title}</h3>
-                    <p class="text-gray-600 mb-2">👤 ${book.author}</p>
-                    <p class="text-gray-600 mb-2">🏷️ ${book.category}</p>
-                    <p class="text-gray-600 mb-4">📅 ${book.year}</p>
-                    <p class="text-gray-500 text-sm mb-4">${book.description}</p>
-                    <div class="flex gap-2">
-                        <button onclick="editBook(${book.id})" class="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-colors">Edit</button>
-                        <button onclick="deleteBook(${book.id})" class="flex-1 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-colors">Hapus</button>
-                    </div>
-                </div>
-            `).join('');
+        function scrollToSection(sectionId) {
+            const target = document.getElementById(sectionId);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
 
-        // Populate select options
+        // Progress bar
+        function setupProgressBar() {
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                document.getElementById('progressBar').style.width = scrolled + '%';
+            });
+        }
+
+        // Back to top button
+        function setupBackToTop() {
+            const backToTop = document.getElementById('backToTop');
+            
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 300) {
+                    backToTop.classList.remove('hidden');
+                } else {
+                    backToTop.classList.add('hidden');
+                }
+            });
+
+            backToTop.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
+
+        // Mobile menu
+        function setupMobileMenu() {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.remove('hidden');
+            });
+        }
+
+        function closeMobileMenu() {
+            document.getElementById('mobileMenu').classList.add('hidden');
+        }
+
+        // Animate statistics
+        function animateStats() {
+            const counters = document.querySelectorAll('.stats-counter');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const counter = entry.target;
+                        const target = parseInt(counter.getAttribute('data-target'));
+                        const increment = target / 100;
+                        let current = 0;
+
+                        const updateCounter = () => {
+                            if (current < target) {
+                                current += increment;
+                                counter.textContent = Math.ceil(current).toLocaleString();
+                                setTimeout(updateCounter, 20);
+                            } else {
+                                counter.textContent = target.toLocaleString();
+                            }
+                        };
+
+                        updateCounter();
+                        observer.unobserve(counter);
+                    }
+                });
+            });
+
+            counters.forEach(counter => observer.observe(counter));
+        }
+
+        // Enhanced book rendering with grid and list views
+        function renderBooks(booksToRender = filteredBooks) {
+            const grid = document.getElementById('booksGrid');
+            const list = document.getElementById('booksList');
+            
+            // Calculate pagination
+            const startIndex = (currentPage - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const paginatedBooks = booksToRender.slice(startIndex, endIndex);
+            
+            if (currentView === 'grid') {
+                grid.classList.remove('hidden');
+                list.classList.add('hidden');
+                
+                grid.innerHTML = paginatedBooks.map(book => `
+                    <div class="book-card bg-white rounded-2xl shadow-xl p-8 relative">
+                        <div class="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                            ⭐ ${book.rating}
+                        </div>
+                        <div class="text-center mb-6">
+                            <div class="w-20 h-20 bg-gradient-to-br from-purple-400 to-blue-500 rounded-2xl mx-auto flex items-center justify-center mb-4">
+                                <i class="fas fa-book text-3xl text-white"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-2 line-clamp-2">${book.title}</h3>
+                        </div>
+                        
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-user w-5 text-purple-600 mr-3"></i>
+                                <span class="text-sm">${book.author}</span>
+                            </div>
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-tag w-5 text-purple-600 mr-3"></i>
+                                <span class="text-sm">${book.category}</span>
+                            </div>
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-calendar w-5 text-purple-600 mr-3"></i>
+                                <span class="text-sm">${book.year}</span>
+                            </div>
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-file-alt w-5 text-purple-600 mr-3"></i>
+                                <span class="text-sm">${book.pages} halaman</span>
+                            </div>
+                        </div>
+                        
+                        <p class="text-gray-500 text-sm mb-6 line-clamp-3">${book.description}</p>
+                        
+                        <div class="flex items-center justify-between mb-6">
+                            <span class="text-2xl font-bold text-purple-600">${book.price}</span>
+                            <button class="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-lg hover:from-green-600 hover:to-green-700 transition-all text-sm">
+                                <i class="fas fa-download mr-1"></i>Beli
+                            </button>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <button onclick="editBook(${book.id})" class="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 text-white py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-sm">
+                                <i class="fas fa-edit mr-1"></i>Edit
+                            </button>
+                            <button onclick="deleteBook(${book.id})" class="flex-1 bg-gradient-to-r from-red-500 to-red-600 text-white py-2 rounded-lg hover:from-red-600 hover:to-red-700 transition-all text-sm">
+                                <i class="fas fa-trash mr-1"></i>Hapus
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                grid.classList.add('hidden');
+                list.classList.remove('hidden');
+                
+                list.innerHTML = paginatedBooks.map(book => `
+                    <div class="book-card bg-white rounded-2xl shadow-xl p-6 flex items-center gap-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-purple-400 to-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-book text-2xl text-white"></i>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-start justify-between mb-2">
+                                <h3 class="text-xl font-bold text-gray-800">${book.title}</h3>
+                                <div class="flex items-center gap-4">
+                                    <span class="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                                        ⭐ ${book.rating}
+                                    </span>
+                                    <span class="text-xl font-bold text-purple-600">${book.price}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-6 text-gray-600 text-sm mb-3">
+                                <span><i class="fas fa-user mr-2 text-purple-600"></i>${book.author}</span>
+                                <span><i class="fas fa-tag mr-2 text-purple-600"></i>${book.category}</span>
+                                <span><i class="fas fa-calendar mr-2 text-purple-600"></i>${book.year}</span>
+                                <span><i class="fas fa-file-alt mr-2 text-purple-600"></i>${book.pages} hal</span>
+                            </div>
+                            <p class="text-gray-500 text-sm mb-4">${book.description}</p>
+                            <div class="flex gap-2">
+                                <button class="bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-2 rounded-lg hover:from-green-600 hover:to-green-700 transition-all text-sm">
+                                    <i class="fas fa-download mr-1"></i>Beli
+                                </button>
+                                <button onclick="editBook(${book.id})" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-blue-700 transition-all text-sm">
+                                    <i class="fas fa-edit mr-1"></i>Edit
+                                </button>
+                                <button onclick="deleteBook(${book.id})" class="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg hover:from-red-600 hover:to-red-700 transition-all text-sm">
+                                    <i class="fas fa-trash mr-1"></i>Hapus
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            renderPagination(booksToRender.length);
+        }
+
+        // Pagination
+        function renderPagination(totalItems) {
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+            const pagination = document.getElementById('pagination');
+            
+            if (totalPages <= 1) {
+                pagination.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+            // Previous button
+            if (currentPage > 1) {
+                paginationHTML += `<button onclick="changePage(${currentPage - 1})" class="px-4 py-2 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-chevron-left"></i>
+                </button>`;
+            }
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    paginationHTML += `<button class="px-4 py-2 bg-purple-600 text-white border border-purple-600">${i}</button>`;
+                } else {
+                    paginationHTML += `<button onclick="changePage(${i})" class="px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 transition-colors">${i}</button>`;
+                }
+            }
+            
+            // Next button
+            if (currentPage < totalPages) {
+                paginationHTML += `<button onclick="changePage(${currentPage + 1})" class="px-4 py-2 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-50 transition-colors">
+                    <i class="fas fa-chevron-right"></i>
+                </button>`;
+            }
+            
+            pagination.innerHTML = `<div class="flex">${paginationHTML}</div>`;
+        }
+
+        function changePage(page) {
+            currentPage = page;
+            renderBooks();
+        }
+
+        // View toggle
+        function setView(view) {
+            currentView = view;
+            currentPage = 1;
+            
+            const gridBtn = document.getElementById('gridViewBtn');
+            const listBtn = document.getElementById('listViewBtn');
+            
+            if (view === 'grid') {
+                gridBtn.classList.add('bg-purple-600', 'text-white');
+                gridBtn.classList.remove('bg-gray-200', 'text-gray-700');
+                listBtn.classList.add('bg-gray-200', 'text-gray-700');
+                listBtn.classList.remove('bg-purple-600', 'text-white');
+            } else {
+                listBtn.classList.add('bg-purple-600', 'text-white');
+                listBtn.classList.remove('bg-gray-200', 'text-gray-700');
+                gridBtn.classList.add('bg-gray-200', 'text-gray-700');
+                gridBtn.classList.remove('bg-purple-600', 'text-white');
+            }
+            
+            renderBooks();
+        }
+
+        // Enhanced search and filter
+        function searchBooks() {
+            const searchTerm = document.getElementById('searchBooks').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            
+            filteredBooks = books.filter(book => {
+                const matchesSearch = book.title.toLowerCase().includes(searchTerm) ||
+                                    book.author.toLowerCase().includes(searchTerm) ||
+                                    book.description.toLowerCase().includes(searchTerm);
+                
+                const matchesCategory = !categoryFilter || book.category === categoryFilter;
+                
+                return matchesSearch && matchesCategory;
+            });
+            
+            currentPage = 1;
+            renderBooks();
+            updateBookCount();
+        }
+
+        function filterBooks() {
+            searchBooks(); // Reuse search function
+        }
+
+        function sortBooks() {
+            const sortBy = document.getElementById('sortBy').value;
+            
+            filteredBooks.sort((a, b) => {
+                switch (sortBy) {
+                    case 'title':
+                        return a.title.localeCompare(b.title);
+                    case 'author':
+                        return a.author.localeCompare(b.author);
+                    case 'year':
+                        return b.year - a.year;
+                    case 'category':
+                        return a.category.localeCompare(b.category);
+                    default:
+                        return 0;
+                }
+            });
+            
+            renderBooks();
+        }
+
+        function updateBookCount() {
+            document.getElementById('bookCount').textContent = filteredBooks.length;
+        }
+
+        // Enhanced populate selects
         function populateSelects() {
             const authorSelect = document.getElementById('bookAuthor');
             const categorySelect = document.getElementById('bookCategory');
@@ -285,7 +1424,7 @@
                 categories.map(category => `<option value="${category}">${category}</option>`).join('');
         }
 
-        // Book management functions
+        // Book management functions (enhanced)
         function showAddBookForm() {
             document.getElementById('modalTitle').textContent = 'Tambah Buku Baru';
             document.getElementById('bookForm').reset();
@@ -311,13 +1450,15 @@
 
         function saveBook(event) {
             event.preventDefault();
-            const formData = new FormData(event.target);
             const bookData = {
                 title: document.getElementById('bookTitle').value,
                 author: document.getElementById('bookAuthor').value,
                 category: document.getElementById('bookCategory').value,
                 year: parseInt(document.getElementById('bookYear').value),
-                description: document.getElementById('bookDescription').value
+                description: document.getElementById('bookDescription').value,
+                rating: 4.5 + Math.random() * 0.5, // Random rating between 4.5-5.0
+                pages: Math.floor(Math.random() * 300) + 200, // Random pages 200-500
+                price: `Rp ${(Math.floor(Math.random() * 100) + 50).toLocaleString()}.000`
             };
 
             const bookId = document.getElementById('bookId').value;
@@ -331,14 +1472,22 @@
                 books.push({ id: newId, ...bookData });
             }
 
+            filteredBooks = [...books];
             renderBooks();
+            updateBookCount();
             closeModal();
+            
+            // Show success message
+            showNotification(bookId ? 'Buku berhasil diperbarui!' : 'Buku berhasil ditambahkan!', 'success');
         }
 
         function deleteBook(id) {
             if (confirm('Apakah Anda yakin ingin menghapus buku ini?')) {
                 books = books.filter(b => b.id !== id);
+                filteredBooks = [...books];
                 renderBooks();
+                updateBookCount();
+                showNotification('Buku berhasil dihapus!', 'success');
             }
         }
 
@@ -347,7 +1496,7 @@
             document.getElementById('bookModal').classList.remove('flex');
         }
 
-        // Author and Category management
+        // Author and Category management (enhanced)
         function showAuthorManager() {
             currentManageType = 'authors';
             document.getElementById('manageModalTitle').textContent = 'Kelola Penulis';
@@ -371,9 +1520,11 @@
             const items = currentManageType === 'authors' ? authors : categories;
             
             itemsList.innerHTML = items.map((item, index) => `
-                <div class="flex justify-between items-center bg-gray-50 p-3 rounded-lg">
-                    <span>${item}</span>
-                    <button onclick="deleteItem(${index})" class="text-red-600 hover:text-red-800">🗑️</button>
+                <div class="flex justify-between items-center bg-gradient-to-r from-gray-50 to-blue-50 p-4 rounded-xl border border-gray-200">
+                    <span class="font-medium text-gray-800">${item}</span>
+                    <button onclick="deleteItem(${index})" class="text-red-600 hover:text-red-800 hover:bg-red-50 p-2 rounded-lg transition-all">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
             `).join('');
         }
@@ -382,9 +1533,19 @@
             const newName = document.getElementById('newItemName').value.trim();
             if (newName) {
                 if (currentManageType === 'authors') {
-                    authors.push(newName);
+                    if (!authors.includes(newName)) {
+                        authors.push(newName);
+                        showNotification('Penulis berhasil ditambahkan!', 'success');
+                    } else {
+                        showNotification('Penulis sudah ada!', 'warning');
+                    }
                 } else {
-                    categories.push(newName);
+                    if (!categories.includes(newName)) {
+                        categories.push(newName);
+                        showNotification('Kategori berhasil ditambahkan!', 'success');
+                    } else {
+                        showNotification('Kategori sudah ada!', 'warning');
+                    }
                 }
                 document.getElementById('newItemName').value = '';
                 renderManageItems();
@@ -393,13 +1554,17 @@
         }
 
         function deleteItem(index) {
-            if (currentManageType === 'authors') {
-                authors.splice(index, 1);
-            } else {
-                categories.splice(index, 1);
+            if (confirm('Apakah Anda yakin ingin menghapus item ini?')) {
+                if (currentManageType === 'authors') {
+                    authors.splice(index, 1);
+                    showNotification('Penulis berhasil dihapus!', 'success');
+                } else {
+                    categories.splice(index, 1);
+                    showNotification('Kategori berhasil dihapus!', 'success');
+                }
+                renderManageItems();
+                populateSelects();
             }
-            renderManageItems();
-            populateSelects();
         }
 
         function closeManageModal() {
@@ -407,34 +1572,95 @@
             document.getElementById('manageModal').classList.remove('flex');
         }
 
-        // Search and filter functions
-        function searchBooks() {
-            const searchTerm = document.getElementById('searchBooks').value.toLowerCase();
-            const categoryFilter = document.getElementById('categoryFilter').value;
+        // Export data function
+        function exportData() {
+            const data = {
+                books: books,
+                authors: authors,
+                categories: categories,
+                exportDate: new Date().toISOString()
+            };
             
-            let filteredBooks = books.filter(book => 
-                book.title.toLowerCase().includes(searchTerm) ||
-                book.author.toLowerCase().includes(searchTerm) ||
-                book.description.toLowerCase().includes(searchTerm)
-            );
-
-            if (categoryFilter) {
-                filteredBooks = filteredBooks.filter(book => book.category === categoryFilter);
-            }
-
-            renderBooks(filteredBooks);
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `sanad-guru-data-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showNotification('Data berhasil diekspor!', 'success');
         }
 
-        function filterBooks() {
-            searchBooks(); // Reuse search function which also handles filtering
-        }
-
-        // Contact form
+        // Enhanced contact form
         function sendMessage(event) {
             event.preventDefault();
-            alert('Terima kasih! Pesan Anda telah dikirim. Kami akan segera menghubungi Anda.');
-            event.target.reset();
+            
+            // Simulate form submission
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Mengirim...';
+            submitBtn.disabled = true;
+            
+            setTimeout(() => {
+                showNotification('Terima kasih! Pesan Anda telah dikirim. Tim kami akan segera menghubungi Anda dalam 1x24 jam.', 'success');
+                event.target.reset();
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 2000);
         }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 z-50 p-4 rounded-xl shadow-2xl transform transition-all duration-300 translate-x-full`;
+            
+            const colors = {
+                success: 'bg-green-500 text-white',
+                error: 'bg-red-500 text-white',
+                warning: 'bg-yellow-500 text-white',
+                info: 'bg-blue-500 text-white'
+            };
+            
+            const icons = {
+                success: 'fas fa-check-circle',
+                error: 'fas fa-exclamation-circle',
+                warning: 'fas fa-exclamation-triangle',
+                info: 'fas fa-info-circle'
+            };
+            
+            notification.className += ` ${colors[type]}`;
+            notification.innerHTML = `
+                <div class="flex items-center">
+                    <i class="${icons[type]} mr-3"></i>
+                    <span>${message}</span>
+                    <button onclick="this.parentElement.parentElement.remove()" class="ml-4 hover:bg-white hover:bg-opacity-20 p-1 rounded">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.classList.remove('translate-x-full');
+            }, 100);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                notification.classList.add('translate-x-full');
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, 5000);
+        }
+
+        // Initialize filtered books
+        filteredBooks = [...books];
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97ab60c082896045',t:'MTc1NzEzNDU2Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97ab6a2367876045',t:'MTc1NzEzNDk1MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
